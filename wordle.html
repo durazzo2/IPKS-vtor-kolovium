@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wordle-like Game</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+        .box {
+            border: black solid 3px;
+            height: 120px;
+            width: 120px;
+            font-size: 120px;
+            text-align: center;
+            margin: 2px;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+<script>
+
+const data = '["bukva","jazik","vokal","misla","tablo"]';
+
+let newData = JSON.parse(data)
+
+function random(data) {
+    let randomIndex = Math.floor(Math.random() * data.length )
+    return data[randomIndex];
+}
+
+let newRandom = random(newData)
+console.log(newRandom)
+
+let count=0;
+
+function newLine() {
+    let newDiv = document.createElement("div")
+    document.body.appendChild(newDiv)
+
+    for (let i = 0; i < 5; i++) {
+        let createInput = document.createElement("input")
+        createInput.setAttribute("class","box")
+        createInput.setAttribute("id","Br" + count++);
+
+        createInput.addEventListener("keydown", function (e) {
+            if (e.key === "Enter"){
+                checkInputs();
+            }
+        })
+        newDiv.appendChild(createInput)
+    }
+    count=0;
+}
+newLine()
+
+function checkInputs() {
+    let check = true;
+    for (let i = 0; i <5; i++) {
+        let input = document.getElementById("Br"+i);
+        if (input.value.length > 1 || input.value.length <1){
+            alert("Внесете во секое поле точно една буква")
+            check = false
+            return
+        }
+    }
+        if (check === true){
+            checkWord();
+        }
+}
+
+function checkWord() {
+        let collectWord = ""
+        let getInput  = document.getElementsByTagName("input")
+
+    for (let i = 0; i < 5; i++) {
+        let input = document.getElementById("Br"+i)
+        collectWord += input.value
+    }
+
+    for (let i = 0; i < 5; i++) {
+        getInput[i].setAttribute("disabled","true")
+        getInput[i].style.color = "gray"
+    }
+    if (collectWord === newRandom){
+        for (let i = 0; i < 5; i++) {
+            let get = document.getElementById("Br"+i)
+            get.style.backgroundColor = "green"
+            document.body.style.backgroundColor = "green";
+            $("#Br"+i).fadeOut(10)
+            $("#Br"+i).fadeIn(1010)
+        }
+    }
+    if (collectWord !== newRandom ){
+        for (let i = 0; i < 5; i++) {
+            let input = document.getElementById("Br"+i)
+            for (let j = 0; j < 5; j++) {
+                if (i !== j && collectWord[i] === newRandom[j]){
+                    input.style.backgroundColor = "yellow"
+                    $("#Br" + i).fadeOut(10);
+                    $("#Br" + i).fadeIn(1100);
+                }
+                if (i === j && collectWord[i] === newRandom[j]){
+                    input.style.backgroundColor = "green"
+                    $("#Br"+i).fadeOut(10)
+                    $("#Br"+i).fadeIn(1100)
+                }
+            }
+        }
+
+        for (let i = 0; i < 5; i++) {
+            getInput[i].removeAttribute("id")
+        }
+        newLine();
+        console.log(newRandom)
+    }
+
+}
+
+
+</script>
+
+</body>
+</html>

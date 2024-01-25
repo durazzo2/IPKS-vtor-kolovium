@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+
+     <style>
+        div{
+            display: inline-block;
+            width: 500px;
+        }
+    </style>
+
+
+</head>
+<body>
+<div>
+<div id="random-zboroj">
+
+</div>
+<hr>
+<div id="premesti">
+
+</div>
+<hr>
+<button onclick="check()">check</button>
+</div>
+
+<script>
+
+    const bukvi = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
+
+
+
+    window.onload = function () {
+
+        for (let i = 0; i < 50; i++) {
+
+            let createDiv = document.createElement("div")
+            createDiv.innerHTML = generateRandom()
+            createDiv.style.backgroundColor = `rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)})`;
+            createDiv.style.width = "150px"
+            createDiv.style.margin = "5px"
+            createDiv.setAttribute("onclick","premesti(this)")
+            let getDiv = document.getElementById("random-zboroj")
+            getDiv.appendChild(createDiv)
+
+        }
+    }
+
+    function generateRandom() {
+        let dolzina = Math.floor(Math.random() * (10 -3 +1)) + 3
+
+        let string = ""
+
+        for (let i = 0; i < dolzina; i++) {
+           string+= randomBukva()
+
+        }
+        return string
+    }
+
+    function randomBukva() {
+        let index = Math.floor(Math.random()*bukvi.length)
+        return bukvi[index]
+
+    }
+    function premesti(zbor) {
+            let randomdiv = document.getElementById("random-zboroj")
+        let premesti = document.getElementById("premesti")
+        zbor.setAttribute("onclick","vrati(this)")
+        zbor.setAttribute("class","teodor")
+        randomdiv.removeChild(zbor)
+        premesti.appendChild(zbor)
+
+    }
+    function vrati(zbor) {
+        let randomdiv = document.getElementById("random-zboroj")
+        let premesti = document.getElementById("premesti")
+        zbor.setAttribute("onclick","premesti(this)")
+        zbor.removeAttribute("class")
+        premesti.removeChild(zbor)
+        randomdiv.appendChild(zbor)
+    }
+    let poeni = 0;
+
+    function check() {
+        let flag =true
+        let zborovi = document.getElementsByClassName("teodor")
+
+        for (let i = 0; i < zborovi.length-1; i++) {
+            let text = zborovi[i].textContent
+            let text2= zborovi[i+1].textContent
+
+            if (text.charAt(text.length-1) === text2.charAt(0)){
+                poeni += text.length + text2.length
+            }
+            else  if (text.charAt(text.length) !== text2.charAt(0)){
+                alert("Greska")
+                flag= false
+            }
+        }
+        if (flag === true)
+        alert(poeni)
+    }
+
+
+</script>
+
+</body>
+</html>

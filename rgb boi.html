@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        input{
+            width: 50px;
+        }
+        p{
+            display: inline-block;
+        }
+        #text{
+            width: 200px;
+        }
+    </style>
+</head>
+<body>
+
+<div>
+    <div>
+        <label for="red">Red</label>
+        <input type="number" min="0" id="red" value="0"><i>(0-255)</i>
+    </div>
+    <div>
+        <label for="green">Green</label>
+        <input type="number"min="0" id="green" value="0"><i>(0-255)</i>
+    </div>
+    <div>
+        <label for="blue">Blue</label>
+        <input type="number"min="0" id="blue" value="0"><i>(0-255)</i>
+    </div>
+</div>
+<br>
+
+<form>
+    <div>
+        <label for="start">Start</label>
+        <input name="da" type="radio" id="start">
+    </div>
+    <div>
+        <label for="end">End</label>
+        <input name="da" type="radio" id="end">
+    </div>
+</form>
+
+<br>
+<div>
+    <label for="text">Text</label>
+    <input type="text" id="text">
+</div>
+<br>
+<div>
+    <button id="add" onclick="add()">Add</button>
+    <button id="remove" onclick="remove()">Remove</button>
+</div>
+
+<div id="add-here">
+
+</div>
+
+
+
+<script>
+    var getDiv = document.getElementById("add-here");
+    function add() {
+        var red = document.getElementById("red").value;
+        var green = document.getElementById("green").value;
+        var blue = document.getElementById("blue").value;
+        var text = document.getElementById("text").value;
+
+
+
+        console.log("Red:", red);
+        console.log("Green:", green);
+        console.log("Blue:", blue);
+        console.log("Text:", text);
+
+        let createDiv = document.createElement("div");
+        createDiv.textContent = text
+       let color = "#"+tohex(parseInt(red)) + tohex(parseInt(green))+tohex(parseInt(blue))
+        console.log("Color:", color);
+
+        createDiv.setAttribute("style", "color:"+color+";");
+
+        if (document.getElementById("end").checked){
+            getDiv.appendChild(createDiv);
+
+        }
+
+        if (document.getElementById("start").checked){
+            if (getDiv.hasChildNodes()){
+                getDiv.insertBefore(createDiv, getDiv.firstChild)
+            }
+            else getDiv.appendChild(createDiv)
+        }
+
+        text.value=""
+    }
+
+    function tohex(c) {
+        var hex = c.toString(16);
+        return hex.length === 1 ? "0" + hex : hex;
+    }
+
+
+    function remove() {
+
+        if (document.getElementById("end").checked){
+            getDiv.removeChild(getDiv.childNodes[getDiv.childNodes.length-1])
+        }
+        if (document.getElementById("start").checked){
+            getDiv.removeChild(getDiv.childNodes[0])
+        }
+
+    }
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    #kopce{
+        margin: 10px;
+    }
+    #kocka1,#kocka2{
+        border: 3px solid black;
+        height: 120px;
+        width: 120px;
+        font-size: 110px;
+        text-align: center;
+    }
+</style>
+<body>
+
+<input type="number" id="number" min="1"> <button onclick="roll()" >Roll</button>
+<br>
+<br>
+
+<div>
+    <input type="text" id="kocka1">
+    <input type="text" id="kocka2">
+    <br>
+</div>
+
+<div>
+    <button id="kopce" onclick="historyToJson()">History to Json</button>
+</div>
+
+<script>
+
+    let jsonArray=[]
+    let dices= ""
+    let input = ""
+    let i=0
+    let timeToStop= 0
+
+    function roll() {
+        if ( document.getElementById("number").value ===""){
+            alert("Can't roll without a number!")
+            return
+        }
+        let reset = document.getElementById("number")
+        reset.style.backgroundColor = ""
+
+        interval = setInterval(vrti,1)
+    }
+
+    function vrti() {
+        timeToStop +=10
+        let kocka1 = document.getElementById("kocka1")
+        kocka1.value = Math.floor(Math.random()*6) +1
+
+        let kocka2 = document.getElementById("kocka2")
+        kocka2.value = Math.floor(Math.random()*6) +1
+
+        if (timeToStop>2500){
+            clearInterval(interval)
+            timeToStop = 0
+            checkSum(kocka1.value,kocka2.value)
+
+            jsonArray[i++] = JSON.stringify({input:parseInt(document.getElementById("number").value) + " ",
+                dices:[parseInt(kocka1.value),parseInt(kocka2.value)] })
+
+            console.log(jsonArray)
+
+        }
+    }
+
+    function checkSum(box1, box2) {
+        let sum=0
+
+        let kocka1 = parseInt(box1)
+        let kocka2 = parseInt(box2)
+
+        let number = document.getElementById("number")
+
+        sum = kocka1 + kocka2
+
+        if (parseInt(number.value) === sum){
+             number.style.backgroundColor = "green"
+        }
+        else if (parseInt(number.value) !== sum){
+            number.style.backgroundColor = "red"
+        }
+    }
+
+    function historyToJson() {
+        let array = ""
+        for (let i=0;i<jsonArray.length -1 ;i++){
+            array += jsonArray[i] + " "
+        }
+        array = "[" + array + jsonArray[jsonArray.length -1 ] + "]"
+        alert(array)
+    }
+
+</script>
+
+</body>
+</html>
